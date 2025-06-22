@@ -28,8 +28,20 @@ This machine learning project aims to predict housing prices using various regre
 To reduce the effect of extreme values:
 
 ```python
-df['price'] = df['price'].clip(upper=df['price'].quantile(0.99))
-df['area'] = df['area'].clip(upper=df['area'].quantile(0.99))
+caps = {
+    'price':     {'min': 1_750_000, 'max': 6_895_000},
+    'area':      {'min': 1_650,     'max': 7_750},
+    'bedrooms':  {'min': 1,         'max': 4},
+    'bathrooms': {'min': 1,         'max': 3},
+    'floors':    {'min': 1,         'max': 3},
+    'parking':   {'min': 0,         'max': 2}
+}
+
+for col in caps:
+    df[col] = df[col].clip(
+        lower=caps[col]['min'], 
+        upper=caps[col]['max']
+    )
 ```
 
 ---
@@ -82,28 +94,13 @@ Models were evaluated using:
 
 ---
 
-## 📊 6. Visualizations (optional if available)
 
-* Correlation heatmap
-* Price vs Area scatter plots
-* Residual plots
-* Actual vs Predicted plot
-
----
-
-## 🧠 7. Key Insights
+## 🧠 6. Key Insights
 
 * Feature engineering significantly improved model performance.
 * Gradient Boosting handled the data’s non-linearity effectively.
 * Ordinal encoding for `furnishingstatus` retained the inherent order, which helped models learn better.
 
----
 
-## 🚀 Next Steps / Improvements
-
-* Deploy the model using a web framework like Streamlit or Flask.
-* Use cross-validation with time-based splitting (if dataset is time-aware).
-* Perform SHAP or permutation-based feature importance analysis.
-* Consider stacking models for better ensemble performance.
 
  
